@@ -15,7 +15,9 @@ Ext.define('CCM_Reports.view.main.Main', {
 
         'CCM_Reports.view.main.MainController',
         'CCM_Reports.view.main.MainModel',
-        'CCM_Reports.view.main.List'
+//        'CCM_Reports.view.main.List'
+//        'CCM_Reports.view.main.VisualizeSamples'
+        'CCM_Reports.view.main.VisualizeReport'
     ],
 
     controller: 'main',
@@ -80,7 +82,13 @@ Ext.define('CCM_Reports.view.main.Main', {
         iconCls: 'fa-home',
         // The following grid shares a store with the classic version's grid as well!
         items: [{
-            xtype: 'mainlist'
+//            xtype: 'mainlist'
+            xtype: 'visualizereport'
+//                xtype: 'visualizesamples'
+//            renderTo : Ext.get('container')
+//             html: '<div id="container"></div>'
+//            id: 'id_rep'
+               
         }]
     }, {
         title: 'Users',
@@ -101,4 +109,5 @@ Ext.define('CCM_Reports.view.main.Main', {
             html: '{loremIpsum}'
         }
     }]
+
 });
