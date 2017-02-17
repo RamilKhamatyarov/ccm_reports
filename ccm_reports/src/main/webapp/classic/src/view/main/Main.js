@@ -14,10 +14,12 @@ Ext.define('CCM_Reports.view.main.Main', {
         'Ext.window.MessageBox',
 
         'CCM_Reports.view.main.MainController',
-        'CCM_Reports.view.main.MainModel',
+        'CCM_Reports.view.main.MainModel'
 //        'CCM_Reports.view.main.List'
 //        'CCM_Reports.view.main.VisualizeSamples'
-        'CCM_Reports.view.main.VisualizeReport'
+//        'CCM_Reports.view.main.LoadReport'
+//        'CCM_Reports.view.main.VisualizeSamples'
+//        'CCM_Reports.view.main.ReportList'
     ],
 
     controller: 'main',
@@ -76,38 +78,90 @@ Ext.define('CCM_Reports.view.main.Main', {
             }
         }
     },
-
     items: [{
-        title: 'Home',
-        iconCls: 'fa-home',
-        // The following grid shares a store with the classic version's grid as well!
-        items: [{
-//            xtype: 'mainlist'
-            xtype: 'visualizereport'
-//                xtype: 'visualizesamples'
-//            renderTo : Ext.get('container')
-//             html: '<div id="container"></div>'
-//            id: 'id_rep'
-               
+            title: 'Home',
+            iconCls: 'fa-home',
+            // The following grid shares a store with the classic version's grid as well!
+            items: [{
+//                    add: pan
+    //              xtype: 'reportlist'
+                    
+
+            }]
+        }, {
+            title: 'Users',
+            iconCls: 'fa-user',
+            bind: {
+                html: '{loremIpsum}'
+            }
+        }, {
+            title: 'Groups',
+            iconCls: 'fa-users',
+            bind: {
+                html: '{loremIpsum}'
+            }
+        }, {
+            title: 'Settings',
+            iconCls: 'fa-cog',
+            bind: {
+                html: '{loremIpsum}'
+            }
         }]
-    }, {
-        title: 'Users',
-        iconCls: 'fa-user',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }, {
-        title: 'Groups',
-        iconCls: 'fa-users',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }, {
-        title: 'Settings',
-        iconCls: 'fa-cog',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }]
+    
 
 });
+
+
+ Ext.Ajax.request({
+    myArr: [],
+    url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin&j_password=jasperadmin',
+    useDefaultXhrHeader: false,
+    method: 'GET',
+    headers:{              
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+    },
+    params:{
+        fields: [{
+            name: 'creationDate',
+            type: 'date',
+            dateFormat: 'm-d-Y g:i A'
+        }, 'description', 'permissionMask', 
+        {
+            name: 'updateDate',
+            type: 'date'
+        },'uri', 'resourceType'
+        ]
+    },
+    success: function(response){
+        var text = response.responseText;
+        var jsonData = Ext.util.JSON.decode(text);
+        setRest(jsonData);
+
+    },
+
+    failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred');}
+
+});
+function setRest(resp){
+    var store = Ext.create('CCM_Reports.store.ReportStore', {
+
+            proxy: {
+                data: resp
+            }
+    });
+
+    store.load();
+    console.log(store.getAt(0).get('uri'));
+
+    var pan = Ext.create('CCM_Reports.view.main.ReportList', {
+        renderTo: Ext.getBody(),
+//        xtype: 'reportlist',
+        store: store
+    });
+    
+//    Ext.create('CCM_Reports.view.main.Main', {
+//            
+//    });
+};
+
