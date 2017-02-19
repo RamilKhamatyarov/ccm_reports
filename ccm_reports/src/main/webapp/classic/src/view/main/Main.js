@@ -14,12 +14,8 @@ Ext.define('CCM_Reports.view.main.Main', {
         'Ext.window.MessageBox',
 
         'CCM_Reports.view.main.MainController',
-        'CCM_Reports.view.main.MainModel'
-//        'CCM_Reports.view.main.List'
-//        'CCM_Reports.view.main.VisualizeSamples'
-//        'CCM_Reports.view.main.LoadReport'
-//        'CCM_Reports.view.main.VisualizeSamples'
-//        'CCM_Reports.view.main.ReportList'
+        'CCM_Reports.view.main.MainModel',
+       'CCM_Reports.view.main.ReportList'
     ],
 
     controller: 'main',
@@ -83,8 +79,12 @@ Ext.define('CCM_Reports.view.main.Main', {
             iconCls: 'fa-home',
             // The following grid shares a store with the classic version's grid as well!
             items: [{
-//                    add: pan
-    //              xtype: 'reportlist'
+                // autoHeight: true,
+                // layout: 'fit',
+                // flex: 2,
+                // region: 'left',
+                id: 'repContainer',
+                name: 'myReports'
                     
 
             }]
@@ -111,9 +111,7 @@ Ext.define('CCM_Reports.view.main.Main', {
 
 });
 
-
- Ext.Ajax.request({
-    myArr: [],
+Ext.Ajax.request({
     url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin&j_password=jasperadmin',
     useDefaultXhrHeader: false,
     method: 'GET',
@@ -134,34 +132,20 @@ Ext.define('CCM_Reports.view.main.Main', {
         ]
     },
     success: function(response){
-        var text = response.responseText;
+        text = response.responseText;
         var jsonData = Ext.util.JSON.decode(text);
-        setRest(jsonData);
-
+        var store = Ext.create('CCM_Reports.store.ReportStore', {
+                proxy: {
+                    data: jsonData
+                }
+        });
+        store.load();
+        var repListPanel = Ext.create('CCM_Reports.view.main.ReportList', {
+            store: store
+        });
+        Ext.getCmp('repContainer').add(repListPanel);
     },
 
     failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred');}
-
-});
-function setRest(resp){
-    var store = Ext.create('CCM_Reports.store.ReportStore', {
-
-            proxy: {
-                data: resp
-            }
-    });
-
-    store.load();
-    console.log(store.getAt(0).get('uri'));
-
-    var pan = Ext.create('CCM_Reports.view.main.ReportList', {
-        renderTo: Ext.getBody(),
-//        xtype: 'reportlist',
-        store: store
-    });
     
-//    Ext.create('CCM_Reports.view.main.Main', {
-//            
-//    });
-};
-
+})
