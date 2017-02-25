@@ -5,7 +5,7 @@
  */
 Ext.define('CCM_Reports.store.ReportStore', {
     extend: 'Ext.data.Store',
-    model: 'CCM_Reports.store.ReportsModel',
+    model: 'CCM_Reports.model.ReportsModel',
     autoLoad: false,
     //        autoSync: true,
 //    model: 'ReportListModel',
@@ -18,7 +18,6 @@ Ext.define('CCM_Reports.store.ReportStore', {
         fields: [{
             name: 'creationDate',
             type: 'date',
-            dateFormat: 'm-d-Y g:i A'
         }, 'description', 'permissionMask', 
         {
             name: 'updateDate',

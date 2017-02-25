@@ -8,17 +8,16 @@
 Ext.define('CCM_Reports.view.main.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'app-main',
-
     requires: [
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
-
-        'CCM_Reports.view.main.MainController',
         'CCM_Reports.view.main.MainModel',
-       'CCM_Reports.view.main.ReportList'
+        // 'CCM_Reports.view.main.Visualize'
+        'CCM_Reports.view.main.ReportList',
+        // 'CCM_Reports.view.main.VisualizeReport'
+        'CCM_Reports.view.main.RepRefController'
     ],
 
-    controller: 'main',
     viewModel: 'main',
 
     ui: 'navigation',
@@ -26,6 +25,10 @@ Ext.define('CCM_Reports.view.main.Main', {
     tabBarHeaderPosition: 1,
     titleRotation: 0,
     tabRotation: 0,
+
+    // layout: 'fit',
+    autoScroll: true,
+    scroll: false,
 
     header: {
         layout: {
@@ -79,13 +82,20 @@ Ext.define('CCM_Reports.view.main.Main', {
             iconCls: 'fa-home',
             // The following grid shares a store with the classic version's grid as well!
             items: [{
-                // autoHeight: true,
-                // layout: 'fit',
+                
+                layout: 'fit',
+                // overflowY: 'scroll',
+                autoScroll: true,
                 // flex: 2,
                 // region: 'left',
-                id: 'repContainer',
+                // xtype: 'visualizereport',
+                // html: '<div id="container"></div>'
+                // layout: {
+                //         type: 'vbox',
+                //         align: 'stretch'
+                // },
+                id: 'repContainer', 
                 name: 'myReports'
-                    
 
             }]
         }, {
@@ -121,14 +131,18 @@ Ext.Ajax.request({
     },
     params:{
         fields: [{
+            name: 'Description',
+            type: 'description',
+            align: 'right'
+        }, 
+        'uri', 'resourceType', 
+        {
             name: 'creationDate',
             type: 'date',
-            dateFormat: 'm-d-Y g:i A'
-        }, 'description', 'permissionMask', 
-        {
+        }, {
             name: 'updateDate',
             type: 'date'
-        },'uri', 'resourceType'
+        }
         ]
     },
     success: function(response){
@@ -139,13 +153,18 @@ Ext.Ajax.request({
                     data: jsonData
                 }
         });
+        store.filter('resourceType', 'reportUnit')
         store.load();
+       
         var repListPanel = Ext.create('CCM_Reports.view.main.ReportList', {
-            store: store
+            store: store,
+            flex: 1
         });
-        Ext.getCmp('repContainer').add(repListPanel);
+        var repCmp = Ext.getCmp('repContainer');
+        repCmp.add(repListPanel);
     },
 
     failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred');}
     
-})
+});
+

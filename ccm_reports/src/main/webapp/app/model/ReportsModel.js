@@ -4,17 +4,16 @@
  * and open the template in the editor.
  */
 
-Ext.define('CCM_Reports.store.ReportsModel', {
+Ext.define('CCM_Reports.model.ReportsModel', {
     extend: 'Ext.data.Model',
     
     fields: [{
         name: 'creationDate',
         type: 'date',
-        dateFormat: 'm-d-Y g:i A'
     }, 'description', 'permissionMask', 
     {
         name: 'updateDate',
-        type: 'date'
+        type: 'date',
     },'uri', 'resourceType']
     
 });
