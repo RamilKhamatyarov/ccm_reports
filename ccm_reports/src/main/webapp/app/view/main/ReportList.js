@@ -5,6 +5,7 @@
  */
 
 Ext.require(['Ext.data.*', 'Ext.grid.*']);
+
 Ext.define('CCM_Reports.view.main.ReportList', { 
     extend: 'Ext.grid.Panel',
     requires: [
@@ -14,8 +15,8 @@ Ext.define('CCM_Reports.view.main.ReportList', {
     controller: 'ref',
     // layout: 'fit',
     frame: true,
-    height: 650,
-    width: 700,
+    height: 625,
+    width: 750,
     // layout: 'fit',
     autoScroll: true,
     

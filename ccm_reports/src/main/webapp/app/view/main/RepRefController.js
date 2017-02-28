@@ -1,23 +1,39 @@
 
+Ext.require([
+    'Ext.util.History'
+]);
+
+Ext.util.History.init();
 
 Ext.define('CCM_Reports.view.main.RepRefController', {
     extend: 'Ext.app.ViewController',
 
     alias: 'controller.ref',
-    requires: 'CCM_Reports.view.main.VisualizeReport',
     onItemSelected: function (sender, record) {
-        // Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
+
         var uri = record.get('uri');
-        // var mainId = Ext.get('body');
-        // console.log(Ext.get('body'))    
-        
-       Ext.onReady(function(){
-            // console.log(Ext.get('repContainer'));
-            Ext.getCmp('repContainer').removeAll();
-            Ext.getCmp('repContainer').add(Ext.create('Ext.Panel', {
-                html: '<div id="container">Loading report</div>'
-            }));
-            // Ext.DomHelper.append('parent-div', {tag: 'div', cls: 'container', id: 'container'});
+        if (Ext.getCmp('repContainer') != null) Ext.getCmp('repContainer').destroy();
+        Ext.getCmp('repList').add(Ext.create('Ext.panel.Panel', {
+            height: 625,
+            width: 750,
+            id: 'repContainer', 
+            activeTab: 2,
+            layout: {
+                align: 'center',
+                pack: 'center',
+                type: 'hbox'
+            }, 
+
+            html: '<div id="container"></div>',
+            listeners: {
+                afterrender: 'addRepToHistory' 
+            }
+        }));
+        Ext.getCmp('homeTab').getLayout().setActiveItem(Ext.getCmp('repContainer'));
+        Ext.getCmp('repContainer').mask('Loading report');
+
+        Ext.onReady(function(){
+            
             visualize({
                 auth: {
                     name: "jasperadmin",
@@ -28,67 +44,72 @@ Ext.define('CCM_Reports.view.main.RepRefController', {
                 //render report from provided resource
                 v("#container").report({
                     resource: uri,
+                    success: isTrue,
                     error: handleError
+                    
                 });
-
-                // setRep(v.report({
-                //     resource: "/public/Samples/Reports/01._Geographic_Results_by_Segment_Report",
-                //     error: handleError
-                // }))
-
+               
+                //disappear load mask
+                function isTrue() {
+                     Ext.getCmp('repContainer').unmask();
+                };
                 //show error
                 function handleError(err) {
-                    // console.log(document.body);
                     alert(err.message);
                 }
             });
-            console.log(Ext.get('container'));
-            
        });
-    //    console.log(Ext.get('container'));
-       Ext.create('CCM_Reports.view.main.VisualizeReport');
-    //    function setRep(report) {
-    //         console.log(report);
-    //         // var repCmp = Ext.getCmp('repContainer');
-    //         // repCmp.add(report);
-    //    };
        
     },
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            //
+
+    onTabChange: function(tabPanel, tab) {
+        var tabs = [],
+            ownerCt = tabPanel.ownerCt,
+            oldToken, newToken;
+
+        var tokenDelimiter = ':';
+
+        tabs.push(tab.id);
+        tabs.push(tabPanel.id);
+
+        while (ownerCt && ownerCt.is('app-main')) {
+            tabs.push(ownerCt.id);
+            ownerCt = ownerCt.ownerCt;
         }
+        newToken = tabs.reverse().join(tokenDelimiter);
+        oldToken = Ext.History.getToken();
+
+        if (oldToken === null || oldToken.search(newToken) === -1) {
+            console.log('onTabChange ' + newToken);
+            Ext.History.add(newToken);
+        }
+    },
+
+    onAfterRender: function() {
+        Ext.History.on('change', function(token) {
+            var parts, length, i;
+            console.log('on After render  token' + token);
+            if (token) {
+                // var tokenDelimiter = ':';
+                parts = token.split(':');
+                length = parts.length;
+
+                // setActiveTab in all nested tabs
+                for (i = 0; i < length - 1; i++) {
+                    Ext.getCmp(parts[i]).setActiveTab(Ext.getCmp(parts[i + 1]));
+                }
+            }
+        });
+        // This is the initial default state.  Necessary if you navigate starting from the
+        // page without any existing history token params and go back to the start state.
+        var activeTab1 = Ext.getCmp('main-tabs').getActiveTab(),
+            activeTab2 = activeTab1.getActiveTab();
+
+        this.onTabChange(activeTab1, activeTab2);
+    },
+    addRepToHistory: function() {
+        //Add to history repContainer
+        Ext.History.add('main-tabs:homeTab:repContainer');
     }
 });
 
-// var uriReport;
-// var uriRep = function setUri(uri) {
-// //    console.log(uri);
-//    function getUri() {
-//         return this.uri;
-//     };
-// };
-
-// function getUri(){
-//     return uriRep;
-// };
-
-// console.log(uriRep.getUri());
-// visualize({
-//     auth: {
-//         name: "jasperadmin",
-//         password: "jasperadmin",
-//         organization: "organization_1"
-//     }
-//     }, function (v) {
-//     //render report from provided resource
-//     v("#container").report({
-//         resource: "/public/Samples/Reports/01._Geographic_Results_by_Segment_Report",
-//         error: handleError
-//     });
-//     //show error
-//     function handleError(err) {
-//         // console.log(document.body);
-//         alert(err.message);
-//     }
-// });
