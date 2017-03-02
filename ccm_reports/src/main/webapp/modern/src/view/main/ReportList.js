@@ -1,26 +1,18 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 Ext.require(['Ext.data.*', 'Ext.grid.*']);
 
 Ext.define('CCM_Reports.view.main.ReportList', { 
-    extend: 'Ext.grid.Panel',
+    extend: 'Ext.grid.Grid',
     requires: [
         'CCM_Reports.view.main.RepRefController'
     ],
     xtype: 'reportlist',
     controller: 'ref',
-    // layout: 'fit',
+    layout: 'fit',
     frame: true,
-    height: 625,
-    width: 750,
-    // layout: 'fit',
     autoScroll: true,
     
-    title: 'Report list',
+    // title: 'Report list',
     columns: [ {
         text: 'description',
         sortable: true,
@@ -54,6 +46,3 @@ Ext.define('CCM_Reports.view.main.ReportList', {
         
     }
 });
-
-
-

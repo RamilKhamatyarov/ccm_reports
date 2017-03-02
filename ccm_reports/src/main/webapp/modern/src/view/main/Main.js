@@ -4,6 +4,8 @@
  * added to the Viewport container.
  *
  * TODO - Replace the content of this view to suit the needs of your application.
+ * 
+ * Modern Main
  */
 Ext.define('CCM_Reports.view.main.Main', {
     extend: 'Ext.tab.Panel',
@@ -12,12 +14,17 @@ Ext.define('CCM_Reports.view.main.Main', {
     requires: [
         'Ext.MessageBox',
 
-        'CCM_Reports.view.main.MainController',
+        // 'CCM_Reports.view.main.MainController',
         'CCM_Reports.view.main.MainModel',
-        'CCM_Reports.view.main.List'
+        'CCM_Reports.view.main.RepRefController'
     ],
+    // mixins: {
+	// 	observable: 'Ext.util.Observable'
+	// } ,
+    controller: 'ref',
+    id: 'main-tabs',
+    activeTab: 0,
 
-    controller: 'main',
     viewModel: 'main',
 
     defaults: {
@@ -27,16 +34,29 @@ Ext.define('CCM_Reports.view.main.Main', {
         styleHtmlContent: true
     },
 
-    tabBarPosition: 'bottom',
+    tabBarPosition: 'top',
 
     items: [
         {
             title: 'Home',
             iconCls: 'x-fa fa-home',
             layout: 'fit',
+                   
             // The following grid shares a store with the classic version's grid as well!
             items: [{
-                xtype: 'mainlist'
+                activeTab: 0,
+                activeItem: 1,
+
+                title: 'Reports',
+                // id: 'homeTab',
+                iconCls: 'fa-home',
+                // xtype: 'tabpanel',
+                title: 'Report list',
+                id: 'repList',
+                layout: 'fit',
+                autoScroll: true
+
+                
             }]
         },{
             title: 'Users',
@@ -57,5 +77,58 @@ Ext.define('CCM_Reports.view.main.Main', {
                 html: '{loremIpsum}'
             }
         }
-    ]
+    ],
+    listeners: {
+            tabchange: 'onTabChange',
+            afterrender: 'onAfterRender'
+            // activate: 'onAfterRender'
+            // activate: 'sayHelloTest'
+        }   
+});
+Ext.Ajax.request({
+    url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin&j_password=jasperadmin',
+    useDefaultXhrHeader: false,
+    method: 'GET',
+    headers:{              
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+    },
+    params:{
+        fields: [{
+            name: 'Description',
+            type: 'description',
+            align: 'right'
+        }, 
+        'uri', 'resourceType', 
+        {
+            name: 'creationDate',
+            type: 'date',
+        }, {
+            name: 'updateDate',
+            type: 'date'
+        }
+        ]
+    },
+    success: function(response){
+        text = response.responseText;
+        var jsonData = Ext.util.JSON.decode(text);
+        var store = Ext.create('CCM_Reports.store.ReportStore', {
+                proxy: {
+                    data: jsonData
+                }
+        });
+        // console.log('sayHello');
+        store.filter('resourceType', 'reportUnit')
+        store.load();
+        var repListPanel = Ext.create('CCM_Reports.view.main.ReportList', {
+            store: store,
+            id: 'repTable', 
+            flex: 1
+        });
+        var repCmp = Ext.getCmp('repList');
+        repCmp.add(repListPanel);
+    },
+
+    failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred');}
+    
 });

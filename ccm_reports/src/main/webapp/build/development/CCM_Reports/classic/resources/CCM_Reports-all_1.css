@@ -14280,7 +14280,6 @@ a.x-color-picker-item:hover {
 /* D:/heap/nb_projects/ccm_reports/ccm_reports/src/main/webapp/ext/classic/theme-neutral/sass/src/menu/Menu.scss:618 */
 .x-menu-item-checked .x-menu-item-icon-default.x-menu-group-icon {
     font: 18px/24px FontAwesome;
-    background-image: url(images/menu/default-group-checked.png);
 }
 /* D:/heap/nb_projects/ccm_reports/ccm_reports/src/main/webapp/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-menu-item-checked .x-menu-item-icon-default.x-menu-group-icon:before {
@@ -14634,7 +14633,6 @@ a.x-color-picker-item:hover {
 /* D:/heap/nb_projects/ccm_reports/ccm_reports/src/main/webapp/ext/classic/theme-neutral/sass/src/menu/Menu.scss:618 */
 .x-menu-item-checked .x-menu-item-icon-default-menubar.x-menu-group-icon {
     font: 18px/24px FontAwesome;
-    background-image: url(images/menu/default-menubar-group-checked.png);
 }
 /* D:/heap/nb_projects/ccm_reports/ccm_reports/src/main/webapp/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-menu-item-checked .x-menu-item-icon-default-menubar.x-menu-group-icon:before {

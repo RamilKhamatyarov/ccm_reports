@@ -100,7 +100,7 @@ Ext.define('CCM_Reports.view.main.Main', {
                 layout: 'fit',
                 autoScroll: true,
             }
-            ],
+            ]
             
         }, {
             title: 'Users',
