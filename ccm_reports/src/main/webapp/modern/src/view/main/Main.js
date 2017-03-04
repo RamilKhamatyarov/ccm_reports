@@ -31,33 +31,23 @@ Ext.define('CCM_Reports.view.main.Main', {
         tab: {
             iconAlign: 'top'
         },
-        styleHtmlContent: true
+        styleHtmlContent: true,
+       
     },
 
     tabBarPosition: 'top',
 
     items: [
         {
-            title: 'Home',
-            iconCls: 'x-fa fa-home',
+            // title: 'Home',
+            iconCls: 'x-fa fa-table',
             layout: 'fit',
-                   
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                activeTab: 0,
-                activeItem: 1,
-
-                title: 'Reports',
-                // id: 'homeTab',
-                iconCls: 'fa-home',
-                // xtype: 'tabpanel',
-                title: 'Report list',
-                id: 'repList',
-                layout: 'fit',
-                autoScroll: true
-
-                
-            }]
+            activeTab: 0,
+            activeItem: 1,
+            title: 'Reports',
+            id: 'repList',
+            layout: 'fit',
+            autoScroll: true
         },{
             title: 'Users',
             iconCls: 'x-fa fa-user',
@@ -79,11 +69,11 @@ Ext.define('CCM_Reports.view.main.Main', {
         }
     ],
     listeners: {
-            tabchange: 'onTabChange',
-            afterrender: 'onAfterRender'
-            // activate: 'onAfterRender'
-            // activate: 'sayHelloTest'
-        }   
+        
+        activeitemchange: 'onItemChange', 
+        show: 'addRepToList',
+    } 
+      
 });
 Ext.Ajax.request({
     url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin&j_password=jasperadmin',

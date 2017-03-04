@@ -15,30 +15,29 @@ Ext.define('CCM_Reports.view.main.RepRefController', {
 
         var uri = record.get('uri');
         if (Ext.getCmp('repContainer') != null) Ext.getCmp('repContainer').destroy();
-        var repContainer = Ext.create('Ext.panel.Panel', {
-            id: 'repContainer', 
-            activeItem: 2,
-            layout: {
-                align: 'center',
-                pack: 'center',
-                type: 'hbox'
-            }, 
+        //Creating report tab
+        var repContainer = Ext.create('Ext.Panel', {
+            // extend: 'Ext.Container',
+            
+            title: 'Reprort',
+            iconCls: 'x-fa fa-file',
+            id: 'repContainer',
+            scrollable : {
+                direction: 'vertical'
+            },
+            layout: 'fit',
+
 
             html: '<div id="container"></div>',
             listeners: {
-                afterrender: 'addRepToHistory' 
+                renderedchange: 'addRepToContainer'
             }
+            
+            
         });
         var loadMask = Ext.create('Ext.panel.Panel', {
-            // height: 625,
-            // width: 750,
             id: 'loadMask', 
             activeItem: 3,
-            // layout: {
-            //     align: 'center',
-            //     pack: 'center',
-            //     type: 'hbox'
-            // },
             masked: {
                 xtype: 'loadmask',
                 message: 'Loading report',
@@ -47,11 +46,10 @@ Ext.define('CCM_Reports.view.main.RepRefController', {
 
         });
         Ext.getCmp('repList').add(repContainer);
-        // Ext.getCmp('main-tabs').setActiveItem(1);
-        // Ext.getCmp('repContainer').mask('Loading report');
-        Ext.getCmp('repContainer').add(loadMask);
-        //  Ext.getCmp('homeTab').setActiveItem(3);
 
+        Ext.getCmp('repContainer').add(loadMask);
+        
+        //Loading report from jasper
         Ext.onReady(function(){
             
             visualize({
@@ -82,61 +80,35 @@ Ext.define('CCM_Reports.view.main.RepRefController', {
        
     },
 
-    onTabChange: function(tabPanel, tab) {
-        console.log(">>>>>>>>>>>>>>>>>>>> tabPanel " + tabPanel.id + "; tab " + tab.id);
-        var tabs = [],
-            ownerCt = tabPanel.ownerCt,
-            oldToken, newToken;
-
-        var tokenDelimiter = ':';
-
-        tabs.push(tab.id);
-        tabs.push(tabPanel.id);
-
-        while (ownerCt && ownerCt.is('app-main')) {
-            tabs.push(ownerCt.id);
-            ownerCt = ownerCt.ownerCt;
+    addRepToList: function() {
+        //Add to history repList at the starting app
+        Ext.History.add('main-tabs:repList');
+    },
+    addRepToContainer: function() {
+        //Add to history repContainer
+        Ext.History.add('main-tabs:repContainer');
+        this.onBackItem();
+    },
+    onItemChange: function(original,target) {
+        console.log(">>>>>>>>>>>> tabPanel " + original.id + "; tab " + target.id);
+        var oldtoken = Ext.util.History.getToken();
+        var newtoken = original.id + ":" + target.id;
+        if(oldtoken === null || oldtoken.search(newtoken) === -1) {
+            Ext.History.add(newtoken);
         }
-        newToken = tabs.reverse().join(tokenDelimiter);
-        oldToken = Ext.History.getToken();
-
-        if (oldToken === null || oldToken.search(newToken) === -1) {
-            console.log('onTabChange ' + newToken);
-            Ext.History.add(newToken);
-        }
+        this.onBackItem();
     },
 
-    onAfterRender: function() {
-        
-        Ext.History.on('change', function(token) {
-            console.log(">>>>>>>>>>>>>>>>>>>> onHistory token " + token);
-            var parts, length, i;
-            console.log('on After render  token' + token);
+    onBackItem: function() {
+        Ext.util.History.on('change', function(token) {
             if (token) {
-                // var tokenDelimiter = ':';
-                parts = token.split(':');
-                length = parts.length;
-
-                // setActiveTab in all nested tabs
-                for (i = 0; i < length - 1; i++) {
-                    Ext.getCmp(parts[i]).setActiveTab(Ext.getCmp(parts[i + 1]));
+                var pages = token.split(':');
+                for (i = 0; i < pages.length - 1; i++) {
+                    console.log("addRepToContainer repList " + pages[i + 1] + '   ' + Ext.getCmp(pages[i + 1]).getItemId());
+                    Ext.getCmp(pages[i]).setActiveItem(Ext.getCmp(pages[i + 1]));
                 }
             }
         });
-        // This is the initial default state.  Necessary if you navigate starting from the
-        // page without any existing history token params and go back to the start state.
-        // var activeTab1 = Ext.getCmp('main-tabs').getActiveTab(),
-            // console.log("Ext.getCmp('main-tabs') " + Ext.getCmp('main-tabs').getType());
-        //     activeTab2 = activeTab1.getActiveTab();
-
-        // this.onTabChange(activeTab1, activeTab2);
     },
-    addRepToHistory: function() {
-        //Add to history repContainer
-        Ext.History.add('main-tabs:homeTab:repContainer');
-    },
-    sayHelloTest: function() {
-        console.log('sayHelloTest');
-    }
 });
 
