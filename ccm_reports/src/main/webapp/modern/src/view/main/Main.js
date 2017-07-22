@@ -76,7 +76,7 @@ Ext.define('CCM_Reports.view.main.Main', {
       
 });
 Ext.Ajax.request({
-    url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin&j_password=jasperadmin',
+    url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin%7Corganization_1&j_password=jasperadmin',
     useDefaultXhrHeader: false,
     method: 'GET',
     headers:{              
@@ -118,7 +118,16 @@ Ext.Ajax.request({
         var repCmp = Ext.getCmp('repList');
         repCmp.add(repListPanel);
     },
-
-    failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred');}
+	
+	//failure: function(result) {Ext.MessageBox.alert('Error', 'Some problem occurred");}
+    //failure: function(result) {Ext.Msg.alert('Error', 'Some problem occurred', Ext.emptyFn);}
+	failure: function(result) {
+		console.log('Error ---> Some problem occurred');
+		console.log(stackTrace());
+		function stackTrace() {
+				var err = new Error();
+				return err.stack;
+		}
+	}
     
 });

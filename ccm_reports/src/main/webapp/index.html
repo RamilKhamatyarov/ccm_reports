@@ -2,7 +2,30 @@
 <html>
     <head>
         <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script id="microloader" type="text/javascript" src="bootstrap.js"></script>
+		
+        <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"-->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' http://192.168.0.32:8080/jasperserver-pro/* 'unsafe-inline' 'unsafe-eval';  media-src *; connect-src http://192.168.0.32:8080/jasperserver-pro/*"-->
+		
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src http://192.168.0.32:8080/jasperserver-pro/client/visualize.js">
+		
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin%7Corganization_1&j_password=jasperadmin'unsafe-inline' 'unsafe-eval';  media-src *"-->
+		
+		<!-- Allow everything but only from the same origin and foo.com -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.0.32:8080">
+
+		<!-- This policy allows everything (eg CSS, AJAX, object, frame, media, etc) except that 
+			* CSS only from the same origin and inline styles,
+			* scripts only from the same origin and inline styles, and eval()
+		-->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+
+		<!-- Allows XHRs only over HTTPS on the same domain. -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.0.32:8080/jasperserver-pro/client/visualize.js">
+
+		<!-- Allow iframe to https://cordova.apache.org/ -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' http://192.168.0.32:8080"-->
+			
         <script src="bootstrap.js"></script>
         <script type="text/javascript" src="http://192.168.0.32:8080/jasperserver-pro/client/visualize.js"></script>
         <!--<script type="text/javascript" src="visualize.js"></script>-->
