@@ -548,16 +548,8 @@
                     "var": "modern/sass/save.scss",
                     "src": "modern/sass/save"
                 }
-            },
+            }
 			
-			"packager": "cordova",
-				"cordova": {
-					"config": {
-						"platforms": "android",
-						"id": "ru.rkhamatyarov.CCM_Reports"
-					}
-				}
-		
 		}
         
     },

@@ -34,7 +34,7 @@ Ext.define('CCM_Reports.view.main.Main', {
         styleHtmlContent: true,
        
     },
-
+	
     tabBarPosition: 'top',
 
     items: [
@@ -76,7 +76,7 @@ Ext.define('CCM_Reports.view.main.Main', {
       
 });
 Ext.Ajax.request({
-    url: 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin%7Corganization_1&j_password=jasperadmin',
+    url: 'http://192.168.0.84:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin%7Corganization_1&j_password=jasperadmin',
     useDefaultXhrHeader: false,
     method: 'GET',
     headers:{              

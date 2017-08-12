@@ -57,9 +57,30 @@ c.updatedAssets.push(a)):a.uncache()}catch(h){l("Error parsing delta patch for "
 a.cache()}c.notifyUpdateReady()},notifyUpdateReady:function(){"checking"!==c.appCacheState&&c.updatedAssetsReady&&("updated"===c.appCacheState||c.updatedManifest)&&(c.appUpdate={updated:!0,app:"updated"===c.appCacheState,manifest:c.updatedManifest&&c.updatedManifest.exportContent()},c.fireAppUpdate())},fireAppUpdate:function(){Ext.GlobalEvents&&Ext.defer(function(){Ext.GlobalEvents.fireEvent("appupdate",c.appUpdate)},1E3)},checksum:function(a,c){if(!a||!c)return!1;var b=!0,e=c.length,f=a.substring(0,
 1);"/"==f?a.substring(2,e+2)!==c&&(b=!1):"f"==f?a.substring(10,e+10)!==c&&(b=!1):"."==f&&a.substring(1,e+1)!==c&&(b=!1);return b},parseResult:function(a){var c={};!a.exception&&0!==a.status||f.env.phantom?200<=a.status&&300>a.status||304===a.status||f.env.phantom||0===a.status&&0<a.content.length?c.content=a.content:c.error=!0:c.error=!0;return c}};return c}();Ext.manifest=Ext.manifest||"bootstrap";Ext.Microloader.run();</script>
 		
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"-->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' http://192.168.0.32:8080/jasperserver-pro/* 'unsafe-inline' 'unsafe-eval';  media-src *; connect-src http://192.168.0.32:8080/jasperserver-pro/*"-->
+		
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src http://192.168.0.32:8080/jasperserver-pro/client/visualize.js">
+		
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' 'http://192.168.0.32:8080/jasperserver-pro/rest_v2/resources?j_username=jasperadmin%7Corganization_1&j_password=jasperadmin'unsafe-inline' 'unsafe-eval';  media-src *"-->
+		
+		<!-- Allow everything but only from the same origin and foo.com -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.0.32:8080">
+
+		<!-- This policy allows everything (eg CSS, AJAX, object, frame, media, etc) except that 
+			* CSS only from the same origin and inline styles,
+			* scripts only from the same origin and inline styles, and eval()
+		-->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+
+		<!-- Allows XHRs only over HTTPS on the same domain. -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.0.32:8080/jasperserver-pro/client/visualize.js">
+
+		<!-- Allow iframe to https://cordova.apache.org/ -->
+		<!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' http://192.168.0.32:8080"-->
+			
         <script src="bootstrap.js"></script>
-        <script type="text/javascript" src="http://192.168.0.32:8080/jasperserver-pro/client/visualize.js"></script>
+        <script type="text/javascript" src="http://192.168.0.84:8080/jasperserver-pro/client/visualize.js?logLevel=debug"></script>
         <!--<script type="text/javascript" src="visualize.js"></script>-->
         <!--<script type="text/javascript" src="app/view/main/Visualize.js"></script>-->
         <!--<script type="text/javascript" src="app/view/main/RepListView.js"></script>-->

@@ -95,22 +95,22 @@ describe("Ext.form.field.VTypes", function() {
             expect(VTYPES.url('http://localhost/?foo=bar')).toEqual(true);
             expect(VTYPES.url('https://localhost/?foo=bar')).toEqual(true);
 
-            //CAPITAL LOCALHOST
+            //CAPITAL localhost
             //normal localhost
-            expect(VTYPES.url('http://LOCALHOST')).toEqual(true);
-            expect(VTYPES.url('https://LOCALHOST')).toEqual(true);
+            expect(VTYPES.url('http://localhost')).toEqual(true);
+            expect(VTYPES.url('https://localhost')).toEqual(true);
 
             //trailing slash
-            expect(VTYPES.url('http://LOCALHOST/')).toEqual(true);
-            expect(VTYPES.url('https://LOCALHOST/')).toEqual(true);
+            expect(VTYPES.url('http://localhost/')).toEqual(true);
+            expect(VTYPES.url('https://localhost/')).toEqual(true);
 
             //GET params
-            expect(VTYPES.url('http://LOCALHOST?foo=bar')).toEqual(true);
-            expect(VTYPES.url('https://LOCALHOST?foo=bar')).toEqual(true);
+            expect(VTYPES.url('http://localhost?foo=bar')).toEqual(true);
+            expect(VTYPES.url('https://localhost?foo=bar')).toEqual(true);
 
             //trailing slash, GET params
-            expect(VTYPES.url('http://LOCALHOST/?foo=bar')).toEqual(true);
-            expect(VTYPES.url('https://LOCALHOST/?foo=bar')).toEqual(true);
+            expect(VTYPES.url('http://localhost/?foo=bar')).toEqual(true);
+            expect(VTYPES.url('https://localhost/?foo=bar')).toEqual(true);
 
         });
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>InAppBrowser.addEventListener Example</title>
+	
+	<!-- Set scale:  initial-scale-->
+	<meta name="viewport" content="initial-scale=2, maximum-scale=2, user-scalable=no, width=device-width">
+    <!--meta name="viewport" content="width=device-width" /-->
+	
+	<script id="microloader" type="text/javascript" src="bootstrap.js"></script>
+	<!--script src="bootstrap.js"></script-->
+	
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	
+	
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+         var ref = window.open('http://192.168.0.84:8080/CCM_Reports', '_blank', 'location=no,status=no,titlebar=no,toolbar=no,enableViewPortScale=yes');
+     //    ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
+     //    ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
+         ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+         ref.addEventListener('exit', function(event) { alert(event.type); });
+    }
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
